@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Converter</title>
+    <link rel="icon" href="./favicon-32x32.png" type="image/x-icon">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center min-h-screen">
+    <div class="bg-white shadow-2xl rounded-2xl p-8 max-w-md w-full text-center">
+        <h2 class="text-3xl font-extrabold text-gray-800 mb-6">Number Converter</h2>
+        <div class="mb-4">
+            <label class="block text-gray-600 font-semibold">Enter Number</label>
+            <input type="text" id="inputNumber" class="w-full px-4 py-3 border rounded-lg focus:ring-4 focus:ring-blue-500 text-center text-lg font-medium">
+        </div>
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+                <label class="block text-gray-600 font-semibold">From</label>
+                <select id="fromBase" class="w-full px-4 py-3 border rounded-lg text-lg font-medium">
+                    <option value="2">Binary</option>
+                    <option value="8">Octal</option>
+                    <option value="10" selected>Decimal</option>
+                    <option value="16">Hexadecimal</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-600 font-semibold">To</label>
+                <select id="toBase" class="w-full px-4 py-3 border rounded-lg text-lg font-medium">
+                    <option value="2">Binary</option>
+                    <option value="8">Octal</option>
+                    <option value="10">Decimal</option>
+                    <option value="16">Hexadecimal</option>
+                </select>
+            </div>
+        </div>
+        <button onclick="convertNumber()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg text-lg font-semibold hover:opacity-90 transition">Convert</button>
+        <div class="mt-6 p-4 bg-gray-200 rounded-lg text-center text-xl font-bold text-gray-800">
+            <strong>Result:</strong> <span id="result" class="text-blue-600"></span>
+        </div>
+    </div>
+    <footer class="absolute bottom-4 text-white text-sm font-semibold">
+        &copy; 2025 Number Converter | Made with ❤️ by Srabon
+    </footer>
+    <script>
+        function isValidInput(input, base) {
+            const validChars = {
+                2: /^[0-1]+$/,
+                8: /^[0-7]+$/,
+                10: /^[0-9]+$/,
+                16: /^[0-9A-Fa-f]+$/
+            };
+            return validChars[base].test(input);
+        }
+
+        function convertNumber() {
+            let inputNumber = document.getElementById("inputNumber").value.trim();
+            let fromBase = parseInt(document.getElementById("fromBase").value);
+            let toBase = parseInt(document.getElementById("toBase").value);
+            
+            if (inputNumber === "") {
+                alert("Please enter a valid number");
+                return;
+            }
+            
+            if (!isValidInput(inputNumber, fromBase)) {
+                alert("Invalid input for the selected base");
+                return;
+            }
+            
+            try {
+                let decimalValue = parseInt(inputNumber, fromBase);
+                let convertedValue = decimalValue.toString(toBase).toUpperCase();
+                document.getElementById("result").textContent = convertedValue;
+            } catch (error) {
+                alert("Error in conversion. Please check your input.");
+            }
+        }
+    </script>
+</body>
+</html>
